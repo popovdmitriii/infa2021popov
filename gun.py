@@ -121,6 +121,9 @@ class target():
         self.new_target()
 
     def new_target(self):
+        self.f=1
+        vx = self.vx = -2
+        vy = self.vy = -1
         """ Инициализация новой цели. """
         x = self.x = rnd(600, 780)
         y = self.y = rnd(300, 550)
@@ -133,15 +136,33 @@ class target():
         """Попадание шарика в цель."""
         canv.coords(self.id, -10, -10, -10, -10)
         self.points += points
+        self.f=0
         canv.itemconfig(self.id_points, text=self.points)
     def t(self):
-        self.x = self.x - 2
-        x = self.x 
-        y = self.y 
-        r = self.r 
-        canv.coords(self.id, x-r, y-r, x+r, y+r)
-        color = self.color
-        canv.itemconfig(self.id, fill=color)
+        if(self.f==1):
+            if(self.x-self.r<=0):
+             self.vx=-self.vx
+             print('dfg')
+
+            if(self.x+self.r>=800):
+             print('ktf')
+             self.vx=-self.vx
+            if(self.y-self.r<=0):
+             self.vy=-self.vy
+             print('gf')
+
+            if(self.y+self.r>=600):
+             self.vy=-self.vy
+             print('ktuyff')
+             print(self.y)
+            self.x = self.x +  self.vx
+            self.y = self.y + self.vy
+            x = self.x 
+            y = self.y 
+            r = self.r 
+            canv.coords(self.id, x-r, y-r, x+r, y+r)
+            color = self.color
+            canv.itemconfig(self.id, fill=color)
 
 
 
