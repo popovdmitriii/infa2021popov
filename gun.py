@@ -49,7 +49,21 @@ class ball():
         self.x и self.y с учетом скоростей self.vx и self.vy, силы гравитации, действующей на мяч,
         и стен по краям окна (размер окна 800х600).
         """
-        
+        if(self.x-self.r<=0):
+         self.vx=-self.vx
+         print('dfg')
+
+        if(self.x+self.r>=800):
+         print('ktf')
+         self.vx=-self.vx
+        if(self.y-self.r<=0):
+         self.vy=-self.vy
+         print('gf')
+
+        if(self.y+self.r>=600):
+         self.vy=-self.vy
+         print('ktuyff')
+         print(self.y)
         self.x += self.vx
         self.vy -= g
         self.y -= self.vy
