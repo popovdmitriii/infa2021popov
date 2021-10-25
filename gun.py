@@ -4,7 +4,7 @@ import math
 import time
 
 # print (dir(math))
-
+aa=1
 root = tk.Tk()
 fr = tk.Frame(root)
 root.geometry('800x600')
@@ -73,6 +73,7 @@ class ball():
         d=(self.x-obj.x)*(self.x-obj.x)+(self.y-obj.y)*(self.y-obj.y)
         if(d<(self.r+obj.r)*(self.r+obj.r)):
          return True
+         
         else:
          return False
 
@@ -153,6 +154,7 @@ class target():
         self.f=0
         canv.itemconfig(self.id_points, text=self.points)
     def t(self):
+        
         if(self.f==1):
             if(self.x-self.r<=0):
              self.vx=-self.vx
@@ -169,14 +171,16 @@ class target():
              self.vy=-self.vy
              print('ktuyff')
              print(self.y)
+             
             self.x = self.x +  self.vx
             self.y = self.y + self.vy
             x = self.x 
             y = self.y 
             r = self.r 
             canv.coords(self.id, x-r, y-r, x+r, y+r)
+           
             color = self.color
-            canv.itemconfig(self.id, fill=color)
+            
 
 
 
@@ -190,7 +194,11 @@ balls = []
 
 
 def new_game(event=''):
+    
     global gun, t1, t2, screen1, balls, bullet, x
+    for b in balls:  
+     canv.delete(b.id)
+   
     t1.new_target()
     t2.new_target()
 
@@ -212,20 +220,25 @@ def new_game(event=''):
             if b.hittest(t1) and t1.live:
                 t1.live = 0
                 t1.hit()
-               
-                canv.itemconfig(screen1, text='Вы уничтожили цель 1за ' + str(bullet) + ' выстрелов')
+                self=t1
+                canv.delete(t1)
             if b.hittest(t2) and t2.live:
                 t2.live = 0
                 t2.hit()
-            
-                canv.itemconfig(screen1, text='Вы уничтожили цель2 за ' + str(bullet) + ' выстрелов')
+                self=t2
+                canv.delete(t2)
+
             if  t1.live==0 and t2.live==0:
+                for b in balls:  
+                   canv.delete(b.id)
                 new_game()
 
+        canv.bind('<Button-3>', new_game)
         canv.update()
         time.sleep(0.03)
         g1.targetting()
         g1.power_up()
+
     canv.itemconfig(screen1, text='')
     canv.delete(gun)
     root.after(750, new_game)
