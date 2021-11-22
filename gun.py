@@ -12,7 +12,7 @@ canv = tk.Canvas(root, bg='white')
 canv.pack(fill=tk.BOTH, expand=1)
 g=1
 d=0
-b=2
+w=2
 class ball():
     def __init__(self, x=40, y=450):
         """ Конструктор класса ball
@@ -128,8 +128,8 @@ class gun():
 
 
 class target():
-    def __init__(self, x=40, y=450, b=0):
-        self.b=b
+    def __init__(self, x=40, y=450, w=0):
+        self.w=w
         self.points = 0
         self.live = 1
         # FIXME: doesn't work!!! How to call this functions when object is created?
@@ -137,31 +137,34 @@ class target():
         self.id_points = canv.create_text(30,30,text = self.points,font = '28')
         self.new_target()
         
-    def new_target(self, b=0):
-        self.b=b
+    def new_target(self, w=None):
         self.f=1
+        
         vx = self.vx = -2
         vy = self.vy = -1
         """ Инициализация новой цели. """
         x = self.x = rnd(600, 780)
         y = self.y = rnd(300, 550)
         r = self.r = rnd(2, 50)
-        if (b==0):
+        if (self.w==0):
          color = self.color = 'red'
-        if (b==1):
+        if (self.w==1):
          color = self.color = 'grey'
         canv.coords(self.id, x-r, y-r, x+r, y+r)
         canv.itemconfig(self.id, fill=color)
 
-    def hit(self, points=1, b=0):
+    def hit(self, points=1):
         """Попадание шарика в цель."""
-        self.b=b
         canv.coords(self.id, -10, -10, -10, -10)
-        self.points += points
+        if (self.w==0):
+         self.points += points
+        if (self.w==1):
+         self.points -= points
         self.f=0
-        canv.itemconfig(self.id_points, text=self.points)
-    def t(self, b=0):
-        self.b=b
+        canv.delete(self.id_points)
+        self.id_points = canv.create_text(30,30,text = self.points,font = '28')
+    def t(self):
+        
         if(self.f==1):
             if(self.x-self.r<=0):
              self.vx=-self.vx
@@ -191,8 +194,8 @@ class target():
 
 
 
-t1 = target(b=0)
-t2 = target(b=1)
+t1 = target(w=0)
+t2 = target(w=1)
 
 screen1 = canv.create_text(400, 300, text='', font='28')
 g1 = gun()
@@ -202,12 +205,12 @@ balls = []
 
 def new_game(event=''):
     
-    global gun, t1, t2, screen1, balls, bullet, x
+    global gun, t1, t2, screen1, balls, bullet, x, w
     for b in balls:  
      canv.delete(b.id)
    
-    t1.new_target()
-    t2.new_target()
+    t1.new_target(w=0)
+    t2.new_target(w=1)
 
     bullet = 0
     balls = []
@@ -235,7 +238,7 @@ def new_game(event=''):
                 self=t2
                 canv.delete(t2)
 
-            if  t1.live==0 and t2.live==0:
+            if  t1.live==0:
                 for b in balls:  
                    canv.delete(b.id)
                 new_game()
