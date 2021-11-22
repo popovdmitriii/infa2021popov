@@ -12,6 +12,7 @@ canv = tk.Canvas(root, bg='white')
 canv.pack(fill=tk.BOTH, expand=1)
 g=1
 d=0
+b=2
 class ball():
     def __init__(self, x=40, y=450):
         """ Конструктор класса ball
@@ -127,15 +128,17 @@ class gun():
 
 
 class target():
-    def __init__(self, x=40, y=450):
+    def __init__(self, x=40, y=450, b=0):
+        self.b=b
         self.points = 0
         self.live = 1
         # FIXME: doesn't work!!! How to call this functions when object is created?
         self.id = canv.create_oval(0,0,0,0)
         self.id_points = canv.create_text(30,30,text = self.points,font = '28')
         self.new_target()
-
-    def new_target(self):
+        
+    def new_target(self, b=0):
+        self.b=b
         self.f=1
         vx = self.vx = -2
         vy = self.vy = -1
@@ -143,18 +146,22 @@ class target():
         x = self.x = rnd(600, 780)
         y = self.y = rnd(300, 550)
         r = self.r = rnd(2, 50)
-        color = self.color = 'red'
+        if (b==0):
+         color = self.color = 'red'
+        if (b==1):
+         color = self.color = 'grey'
         canv.coords(self.id, x-r, y-r, x+r, y+r)
         canv.itemconfig(self.id, fill=color)
 
-    def hit(self, points=1):
+    def hit(self, points=1, b=0):
         """Попадание шарика в цель."""
+        self.b=b
         canv.coords(self.id, -10, -10, -10, -10)
         self.points += points
         self.f=0
         canv.itemconfig(self.id_points, text=self.points)
-    def t(self):
-        
+    def t(self, b=0):
+        self.b=b
         if(self.f==1):
             if(self.x-self.r<=0):
              self.vx=-self.vx
@@ -184,8 +191,8 @@ class target():
 
 
 
-t1 = target()
-t2 = target()
+t1 = target(b=0)
+t2 = target(b=1)
 
 screen1 = canv.create_text(400, 300, text='', font='28')
 g1 = gun()
