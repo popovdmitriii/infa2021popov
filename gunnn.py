@@ -19,13 +19,15 @@ id_points = canv.create_text(30,30,text = points,font = '28')
 g=1
 d=0
 xx=yy=0
+id_tx = canv.create_text(300,30,text = 'в кляксу не стрелять',font = '28')
 rr=10
 img = ImageTk.PhotoImage(Image.open("pic.png"))
-
+def click(event):
+ canv.delete(id_tx)
 panel = tk.Label(canv, image = img, height=2*rr, width=2*rr)
-id_tx = canv.create_text(300,300,text = 'kgkbgbfhgbfhbfg',font = '28')
-canv.bind('<Button-1>', canv.delete(id_tx) )
- 
+
+canv.bind('<Key>', click )
+
 xx=yy=0
 rr=40
 w=2
@@ -40,6 +42,7 @@ bvy=0
 svx=0
 svy=0
 d=0
+q=0
 w=2
 class ball():
     def __init__(self, x=40, y=450):
@@ -72,16 +75,18 @@ class ball():
                 self.y + self.r
         )
     def move(self):
-        global bx, by, bvx, bvy
+        global bx, by, bvx, bvy, q
         """Переместить мяч по прошествии единицы времени.
         Метод описывает перемещение мяча за один кадр перерисовки. То есть, обновляет значения
         self.x и self.y с учетом скоростей self.vx и self.vy, силы гравитации, действующей на мяч,
         и стен по краям окна (размер окна 800х600).
         """
-        if(self.x-self.r<=0):
+        if(self.x-self.r<=0 and q==0):
          self.vx=-self.vx
+         q=1
          print('dfg')
-
+        if(self.x-self.r>=10):
+         q=0
         if(self.x+self.r>=800):
          print('ktf')
          self.vx=-self.vx
@@ -166,7 +171,6 @@ class target():
         self.live = 1
         # FIXME: doesn't work!!! How to call this functions when object is created?
         self.id = canv.create_oval(0,0,0,0)
-        self.id_points = canv.create_text(30,30,text = self.points,font = '28')
         self.new_target()
         
     def new_target(self, w=None):
@@ -179,6 +183,7 @@ class target():
         x = self.x = rnd(600, 780)
         y = self.y = rnd(300, 550)
         r = self.r = rnd(2, 50)
+        rr=self.r
         if (self.w==0):
          color = self.color = 'red'
          canv.coords(self.id, x-r, y-r, x+r, y+r)
@@ -188,7 +193,7 @@ class target():
          color = self.color = 'grey'
          panel.destroy()
          panel = tk.Label(canv, image = img, height=2*rr, width=2*rr)
-         panel.place(x = x-r, y = y-r)
+         panel.place(x = x-rr, y = y-rr)
         
 
     def hit(self):
@@ -254,7 +259,7 @@ class target():
              #canv.create_oval(x-r,y-r,x+r,y+r,fill = choice(colors), width=0)
              panel = tk.Label(canv, image = img, height=2*rr, width=2*rr)
              #создали картинку заново
-             panel.place(x = x-r, y = y-r)
+             panel.place(x = x-rr, y = y-rr)
              # поместили картинку в координаты 
              #root.after(1000,t)
 
@@ -264,7 +269,7 @@ class target():
 t1 = target(w=0)
 t2 = target(w=1)
 
-screen1 = canv.create_text(400, 300, text='', font='28')
+#screen1 = canv.create_text(400, 300, text='', font='28')
 g1 = gun()
 bullet = 0
 balls = []
@@ -278,7 +283,7 @@ def new_game(event=''):
    
     t1.new_target(w=0)
     t2.new_target(w=1)
-
+    
     bullet = 0
     balls = []
     canv.bind('<Button-1>', g1.fire2_start)
@@ -316,7 +321,7 @@ def new_game(event=''):
         g1.targetting()
         g1.power_up()
 
-    canv.itemconfig(screen1, text='')
+    #canv.itemconfig(screen1, text='')
     canv.delete(gun)
     root.after(750, new_game)
 
