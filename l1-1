@@ -1,0 +1,14 @@
+A = []
+a=0
+b=0
+for i in range(int(input())):
+    A.append(int(input()))
+if(len(A) % 2 == 0):
+    a = len(A) // 2 - 1
+    b = len(A) // 2
+    print(A[a]/2+A[b]/2)
+if(len(A) % 2 == 1):
+    a = len(A) // 2 - 0.5
+    print(int(A[a]))
+
+    
