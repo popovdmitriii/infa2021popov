@@ -1,0 +1,41 @@
+C = []
+a=0
+b=0
+d=0
+xx=0
+for i in range(int(input())):
+    C.append(int(input()))
+for i in range(len(C)):
+    xx=xx+C[i]
+x=xx/float(len(C))
+if(len(C) % 2 == 0):
+    a = len(C) // 2 - 1
+    b = len(C) // 2
+    A = C[0 : a]
+    B = C[b : len(C)-1]
+    mC = C[a]/2+C[b]/2
+if(len(C) % 2 == 1):
+    a = len(C) // 2 - 0.5
+    A = C[0 : a-1]
+    B = C[a+1 : len(C)-1]
+    mC = int(C[a])
+if(len(A) % 2 == 0):
+    a = len(A) // 2 - 1
+    b = len(A) // 2
+    mA = A[a]/2+A[b]/2
+if(len(A) % 2 == 1):
+    a = len(A) // 2 - 0.5
+    mA = int(A[a])
+if(len(B) % 2 == 0):
+    a = len(B) // 2 - 1
+    b = len(B) // 2
+    mB = B[a]/2+B[b]/2
+if(len(B) % 2 == 1):
+    a = len(B) // 2 - 0.5
+    mB = int(B[a])
+for i in range(len(C)):
+    d=d+(C[i]-x)**2
+c=(d/(len(C)-1))**0.5
+print(c)
+print(x)
+print(mB-mA)
